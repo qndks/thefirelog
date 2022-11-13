@@ -11,7 +11,6 @@ SVG는 '시작하는 태그'와 '닫는 태그'로 이루어진다. 예를 들�
 내가 HTML 보기 모드에 붙여넣은 코드는 분명 다음과 같았다.
 
 {% highlight html %}
-{{{#!syntax HTML
 <svg height="18px" version="1.1" viewbox="0 0 38.291 38.291" width="18px" xmlns="http://www.w3.org/2000/svg">
     <g transform="translate(299.68 -51.822)">
         <rect fill="none" height="38.291" style="paint-order: markers stroke;" width="38.291" x="-299.68" y="51.822"/>
