@@ -1,29 +1,38 @@
----
-layout: post
-title:  "Welcome to Jekyll!"
-date:   2022-11-13 18:19:42 +0900
-categories: jekyll update
----
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
+저번에 Ionicons라는 아이콘 폰트를 쓰다가 아이콘이 사라지는 문제가 있어서 아이콘을 직접 만들어 보았다. 벡터 그래픽 편집기 잉크스케이프에 아이콘을 그린 다음 SVG 형식으로 내보내기 하고 HTML 보기 모드에 붙여 넣는 식으로 교체했다. 작업을 완료하고 나서 아이콘이 잘 출력되는 걸 확인하고는 다른 일을 하러 갔다.
 
-Jekyll requires blog post files to be named according to the following format:
+오늘은 예전에 썼던 글을 좀 수정했다. alt 태그가 누락된 이미지를 고쳐주고 `<div>`를 `<p>`로 바꾸는 등의 단순한 작업이었다. 그리고 게시를 눌렀는데 갑자기 아이콘이 보이지 않게 되었다. 왜 이렇게 되었는지 너무 너무 궁금해서 소스코드를 살펴보았다. 그랬더니 원인을 알 수 있었다.
 
-`YEAR-MONTH-DAY-title.MARKUP`
+SVG는 '시작하는 태그'와 '닫는 태그'로 이루어진다. 예를 들어 사각형을 뜻하는 태그 `<rect>`에서 시작하는 태그는 `<rect>`이고 닫는 태그는 `</rect>`이다. 한편 태그 안에는 다른 태그가 들어갈 수도 있다. 예를 들어 그룹을 뜻하는 `<g>`가 경로를 뜻하는 `<path>`와 원을 뜻하는 `<circle>`을 묶었다면 `<g><path></path><circle></circle></g>`과 같이 쓴다. 그런가 하면 내부에 다른 태그가 없는 요소는 시작하자마자 닫을 수도 있는데, `<path/>`와 같이 쓰면 된다.
 
-Where `YEAR` is a four-digit number, `MONTH` and `DAY` are both two-digit numbers, and `MARKUP` is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.
+내가 HTML 보기 모드에 붙여넣은 코드는 분명 다음과 같았다.
 
-Jekyll also offers powerful support for code snippets:
-
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
+{% highlight html %}
+{{{#!syntax HTML
+<svg height="18px" version="1.1" viewbox="0 0 38.291 38.291" width="18px" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(299.68 -51.822)">
+        <rect fill="none" height="38.291" style="paint-order: markers stroke;" width="38.291" x="-299.68" y="51.822"/>
+        <circle cx="-295.53" cy="70.947" fill-rule="evenodd" fill="#4e4e4e" r="2.281" style="paint-order: markers stroke;"/>
+        <path d="m-289.03 71.025h24.123" fill-rule="evenodd" fill="#4e4e4e" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="100" stroke-width="2.876" stroke="#4e4e4e" style="paint-order: markers stroke;"/>
+    </g>
+</svg>
 {% endhighlight %}
 
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
+사각형, 원, 그리고 경로를 그룹화한 모습이다. 그런데 어느 순간 코드가 이렇게 바뀌었다.
 
-[jekyll-docs]: https://jekyllrb.com/docs/home
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
+{% highlight html %}
+<svg height="18px" version="1.1" viewbox="0 0 38.291 38.291" width="18px" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(299.68 -51.822)">
+        <rect fill="none" height="38.291" style="paint-order: markers stroke;" width="38.291" x="-299.68" y="51.822">
+            <circle cx="-295.53" cy="70.947" fill-rule="evenodd" fill="#4e4e4e" r="2.281" style="paint-order: markers stroke;">
+                <path d="m-289.03 71.025h24.123" fill-rule="evenodd" fill="#4e4e4e" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="100" stroke-width="2.876" stroke="#4e4e4e" style="paint-order: markers stroke;"></path>
+             </circle>
+        </rect>
+    </g>
+</svg>
+{% endhighlight %}
+
+사각형 안에 원이 들어 있고, 원 안에 경로가 들어 있는 모습이다. 사각형 안에 원이 들어가는 일은 발생할 수 없으므로 아이콘이 출력되지 않았던 것이다.
+
+구글 블로그의 편집기는 `<path/>`와 같은 표현 방식을 자동으로 망가뜨리는 듯했다. 그래서 시작부터 `<path></path>`를 썼더니 문제가 해결되었다.
+
+이 사건을 겪기 전까지는 SVG에 대해서 어려운 것이라고만 생각했는데, 막상 알아보니 이해하기 쉬워서 놀랐다. 구글 블로그에 SVG를 활용할 방안을 한 번 생각해 봐야겠다,
