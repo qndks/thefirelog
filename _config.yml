@@ -28,6 +28,7 @@ twitter_username: qndks
 github_username:  qndks
 
 permalink: /:categories/:year/:month/:title:output_ext
+google_site_verification: mDwVS4FqbF-f89MOsmmsMI7Bb8zL_JtTSauTR-MPuzY
 
 # Build settings
 theme: minima
