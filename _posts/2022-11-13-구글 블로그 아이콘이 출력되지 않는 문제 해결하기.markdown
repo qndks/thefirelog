@@ -27,7 +27,7 @@ SVG는 '시작하는 태그'와 '닫는 태그'로 이루어진다. 예를 들�
 </svg>
 {% endhighlight %}
 
-사각형, 원, 그리고 경로를 그룹화한 모습이다. 그런데 어느 순간 코드가 이렇게 바뀌었다.
+사각형, 원, 그리고 경로를 그룹화한 모습이다. 그런데 어느 순간 코드가 이렇게 바뀌어 있었다.
 
 {% highlight html %}
 <svg height="18px" version="1.1" viewbox="0 0 38.291 38.291" width="18px" xmlns="http://www.w3.org/2000/svg">
